@@ -1,0 +1,23 @@
+{
+    "name": "enjat26/c4-datatables",
+    "description": "Serverside Datatables library for CodeIgniter4",
+    "type": "library",
+    "require": {
+        "php": ">=7.3",
+        "codeigniter4/framework": "^4",
+        "greenlion/php-sql-parser": ">=4.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jatnika",
+            "email": "jatnika026@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "enjat26\\DataTables\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
