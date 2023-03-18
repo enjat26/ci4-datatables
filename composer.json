@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Enjat26\\CodeIgniterDataTables\\": "src"
+            "Enjat26\\DataTables\\": "src"
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php 
-namespace enjat26\DataTables;
+namespace Enjat26\DataTables;
 
 use \Config\Services;
 
@@ -9,7 +9,7 @@ class DataTable
      /**
      * DataTableQuery object.
      *
-     * @var \enjat26\CodeIgniter4-DataTable\DataTableQuery
+     * @var \Enjat26\CodeIgniter4-DataTable\DataTableQuery
      */
     private $query; 
 
@@ -17,7 +17,7 @@ class DataTable
      /**
      * DataTablColumns object.
      *
-     * @var \enjat26\CodeIgniter4-DataTable\DataTableColumns
+     * @var \Enjat26\CodeIgniter4-DataTable\DataTableColumns
      */
     private $columnDefs; 
 

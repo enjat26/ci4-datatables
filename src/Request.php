@@ -1,5 +1,5 @@
 <?php
-namespace enjat26\DataTables;
+namespace Enjat26\DataTables;
 
 use \Config\Services;
 
