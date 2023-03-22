@@ -1,17 +1,16 @@
 <?php
 
 namespace Enjat26\DataTables\Traits;
-use \Config\Services;
+
 trait Eloquent
 {
+	function __construct()
+	{
+		$this->connection = 'eloquent';
+	}
 	public function eloquent($model)
 	{
-		$service  = Services::request();
-		$request  = $service->getGet();
-		$this->request = $request;
 		$this->query = $model;
-
-		//total record
 		$this->records_total = $this->query->count();
 
 		//jika ada filter
