@@ -4,12 +4,9 @@ namespace Enjat26\DataTables\Traits;
 
 trait Eloquent
 {
-	function __construct()
-	{
-		$this->connection = 'eloquent';
-	}
 	public function eloquent($model)
 	{
+		$this->connection = 'eloquent';
 		$this->query = $model;
 		$this->records_total = $this->query->count();
 
@@ -17,6 +14,9 @@ trait Eloquent
 		if (!empty($this->request['search']['value'])) {
 			foreach ($this->request['columns'] as $column) {
 				if ($column['searchable'] == 'true') {
+					// dd($column['data']);
+					// dd($this->request['search']['value']);
+					// $this->query->where($column['data'], 'jatnika');
 					$this->query->orWhere($column['data'], 'like', '%' . $this->request['search']['value'] . '%');
 				}
 			}
@@ -26,9 +26,10 @@ trait Eloquent
 		$this->records_filtered = $this->query->count();
 
 		//total record jika ada order
-		if (!empty($request['order'])) {
+		if (!empty($this->request['order'])) {
 			$this->query->orderBy($this->request['columns'][$this->request['order'][0]['column']]['data'], $this->request['order'][0]['dir']);
 		}
+		// dd($this->query->toSql());
 		return $this->query->get();
 	}
 }

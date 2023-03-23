@@ -4,12 +4,9 @@ namespace Enjat26\DataTables\Traits;
 
 trait Builder
 {
-	function __construct()
-	{
-		$this->connection = 'builder';
-	}
 	public function builder($model)
 	{
+		$this->connection = 'builder';
 		$this->query = $model;
 		$this->records_total = $this->query->countAllResults();
 
@@ -26,7 +23,7 @@ trait Builder
 		$this->records_filtered = $this->query->countAllResults();
 
 		//total record jika ada order
-		if (!empty($request['order'])) {
+		if (!empty($this->request['order'])) {
 			$this->query->orderBy($this->request['columns'][$this->request['order'][0]['column']]['data'], $this->request['order'][0]['dir']);
 		}
 		return $this->query->get()->getResult();

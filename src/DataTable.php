@@ -6,6 +6,8 @@ use Enjat26\DataTables\Traits\Builder;
 use Enjat26\DataTables\Traits\Eloquent;
 use \Config\Services;
 
+use function PHPUnit\Framework\isEmpty;
+
 class DataTable
 {
     use Eloquent;
@@ -22,35 +24,60 @@ class DataTable
     function __construct()
     {
         $service  = Services::request();
-        $this->request = $service->getGet();
+        $this->request = $service->getPost();
+        // $this->request = $service->getGet();
     }
 
     public function addColumn($callback)
     {
-        foreach ($this->query->get() as $result) {
+        $i = 1;
+        if ($this->connection == 'builder') {
+            $rows = $this->query->get()->getResult();
+        } else {
+            $rows = $this->query->get();
+        }
+        foreach ($rows as $result) {
             $this->result_row = $result;
-            $new_array = call_user_func($callback, $this->result_row);
-            $this->data[] = array_merge($result->toArray(), $new_array);
+            $this->add_column = call_user_func($callback, $this->result_row);
+            if ($this->connection == 'builder') {
+                $new_result = (array)$result;
+            } else {
+                $new_result = $result->toArray();
+            }
+            $this->data[] = array_merge(['no_' => $i],  $new_result, $this->add_column);
+            $i++;
         }
         return $this;
     }
 
-    public function data()
+    private function data()
     {
-        foreach ($this->query->get() as $result) {
-            $this->result_row = $result;
-            $this->data[] = $result->toArray();
+        $i = 1;
+        if ($this->connection == 'builder') {
+            $rows = $this->query->get()->getResult();
+        } else {
+            $rows = $this->query->get();
         }
-        return $this;
+        $array = [];
+        foreach ($rows as $result) {
+            if ($this->connection == 'builder') {
+                $new_result = (array)$result;
+            } else {
+                $new_result = $result->toArray();
+            }
+            $array[] = array_merge(['no_' => $i], $new_result);
+            $i++;
+        }
+        return $array;
     }
 
-    public function create()
+    public function render()
     {
         $array = [];
         $array['draw'] = $this->request['draw'];
         $array['recordsTotal'] = $this->records_total;
         $array['recordsFiltered'] = $this->records_filtered;
-        $array['data'] = $this->data;
+        $array['data'] = isEmpty($this->add_column) ? $this->data() : $this->data;
         return $array;
     }
 }
