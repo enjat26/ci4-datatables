@@ -20,18 +20,23 @@ class DataTable
     protected $add_column = [];
     protected $data = [];
     protected $connection;
+    protected $where_builder = [];
+    protected $or_where_builder = [];
+    protected $start;
 
     function __construct()
     {
         $service  = Services::request();
-        $this->request = $service->getPost();
-        // $this->request = $service->getGet();
+        // $this->request = $service->getPost();
+        $this->request = $service->getGet();
+        $this->start = $this->request['start'];
     }
 
     public function addColumn($callback)
     {
-        $i = 1;
+        $i = $this->start+1;
         if ($this->connection == 'builder') {
+            $this->query->orLike($this->or_where_builder);
             $rows = $this->query->get()->getResult();
         } else {
             $rows = $this->query->get();
@@ -52,8 +57,10 @@ class DataTable
 
     private function data()
     {
-        $i = 1;
+        $i = $this->start+1;
         if ($this->connection == 'builder') {
+            // $this->query->where($this->where_builder);
+            $this->query->orLike($this->or_where_builder);
             $rows = $this->query->get()->getResult();
         } else {
             $rows = $this->query->get();
